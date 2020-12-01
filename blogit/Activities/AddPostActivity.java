@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AddPostActivity extends AppCompatActivity {
     public ImageButton Image;
@@ -103,17 +104,17 @@ public class AddPostActivity extends AppCompatActivity {
         final String descVal = PostDesc.getText().toString().trim();
 
 
-//        if (!TextUtils.isEmpty(titleVal) && !TextUtils.isEmpty(descVal) && ImageUri!=null){
-//            //start uploading...
-//            final StorageReference filepath = Storage.child("Blog_Images").
-//                    child(ImageUri.getLastPathSegment());
-//            filepath.putFile(ImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        if (!TextUtils.isEmpty(titleVal) && !TextUtils.isEmpty(descVal) && ImageUri!=null){
+            //start uploading...
+            final StorageReference filepath = Storage.child("Blog_Images").
+                    child(ImageUri.getLastPathSegment());
+            filepath.putFile(ImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-//                    //String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-//                    //Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-//                     //Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
+                    String downloadUrl = Objects.requireNonNull(taskSnapshot.getMetadata()).getReference().getDownloadUrl().toString();
+                    //Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+                     //Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
 //
 //
 //
@@ -132,28 +133,30 @@ public class AddPostActivity extends AppCompatActivity {
 
 
 
-//                    DatabaseReference newPost = PostDatabase.push();
-//
-//                    Map<String, String> dataToSave = new HashMap<>();
-//                    dataToSave.put("title", titleVal);
-//                    dataToSave.put("desc", descVal);
-//                    String image = dataToSave.put("image", downloadUrl.toString());
-//                    dataToSave.put("timestamp", String.valueOf(java.lang.System.currentTimeMillis()));
-//                    dataToSave.put("userid", User.getUid());
-//
-//                    newPost.setValue(dataToSave);
+                    DatabaseReference newPost = PostDatabase.push();
+
+                    Map<String, String> dataToSave = new HashMap<>();
+                    dataToSave.put("title", titleVal);
+                    dataToSave.put("desc", descVal);
+                    dataToSave.put("image", downloadUrl.toString());
+                    dataToSave.put("timestamp", String.valueOf(java.lang.System.currentTimeMillis()));
+                    dataToSave.put("userid", User.getUid());
+
+                    newPost.setValue(dataToSave);
 
 
                     progressDialog.dismiss();
                     Toast.makeText(AddPostActivity.this, "Created!", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(AddPostActivity.this, PostListActivity.class ));
+                    finish();
 
 
                }
-//            });
-//
-//
-//
-//                }
-//
-//            }
+            });
+
+
+
+                }
+
+            }
 }
