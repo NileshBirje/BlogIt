@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.blogit.Data.BlogRecyclerAdapter;
 import com.example.blogit.Model.Blog;
@@ -33,6 +34,7 @@ public class PostListActivity extends AppCompatActivity {
     private FirebaseDatabase Database;
     private FirebaseUser User;
     private FirebaseAuth Auth;
+    private TextView textView;
 
 
     @Override
@@ -43,7 +45,7 @@ public class PostListActivity extends AppCompatActivity {
         User = Auth.getCurrentUser();
 
         Database = FirebaseDatabase.getInstance();
-        DatabaseRef = Database.getReference().child("Blog");
+        DatabaseRef = Database.getReference("Blog");
         DatabaseRef.keepSynced(true);
 
         blogList = new ArrayList<>();
@@ -51,6 +53,10 @@ public class PostListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        if (blogList == null) {
+            textView.setText("Start Posting Soon");
+        }
 
 
 
@@ -93,6 +99,7 @@ public class PostListActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Blog blog = snapshot.getValue(Blog.class);
+                blogList.add(blog);
                 blogRecyclerAdapter = new BlogRecyclerAdapter(PostListActivity.this, blogList);
                 recyclerView.setAdapter(blogRecyclerAdapter);
                 blogRecyclerAdapter.notifyDataSetChanged();

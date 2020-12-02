@@ -1,6 +1,7 @@
 package com.example.blogit.Data;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.blogit.Model.Blog;
 import com.example.blogit.R;
+import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +24,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
 
     private Context context;
     private List<Blog> blogList;
+
 
     public BlogRecyclerAdapter(Context context, List<Blog> blogList) {
         this.context = context;
@@ -41,11 +45,15 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
         holder.title.setText(blog.getTitle());
         holder.desc.setText(blog.getDesc());
 
-        java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
+        DateFormat dateFormat = DateFormat.getDateInstance();
         String formattedDate = dateFormat.format(new Date(Long.parseLong(blog.getTimestamp())).getTime());
 
         holder.timestamp.setText(formattedDate);
-        imageURL = blog.getImage();
+//        String imageURL = "https://s.clipartkey.com/mpngs/s/219-2199468_astronaut-spacesuit-space-planet-astronaut-tattoo-png.png";
+        imageURL =  blog.getImage();
+    Picasso.get().load(imageURL).into(holder.image);
+
+        
 
     }
 

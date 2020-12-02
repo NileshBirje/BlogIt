@@ -107,12 +107,12 @@ public class AddPostActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(titleVal) && !TextUtils.isEmpty(descVal) && ImageUri!=null){
             //start uploading...
             final StorageReference filepath = Storage.child("Blog_Images").
-                    child(ImageUri.getLastPathSegment());
+                    child(Objects.requireNonNull(ImageUri.getLastPathSegment()));
             filepath.putFile(ImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    String downloadUrl = Objects.requireNonNull(taskSnapshot.getMetadata()).getReference().getDownloadUrl().toString();
+                    String downloadUrl = Objects.requireNonNull(taskSnapshot.getMetadata().getReference()).getDownloadUrl().toString();
                     //Uri downloadUrl = taskSnapshot.getUploadSessionUri();
                      //Task<Uri> downloadUrl = taskSnapshot.getStorage().getDownloadUrl();
 //
